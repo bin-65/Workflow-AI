@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------------
-# 2. STYLING & FIXES (EXACT BOTTOM LEFT VECTOR & SHARE DIALOG)
+# 2. STYLING & FIXES (EXPANDED RIGHT BANNER IMAGE & VECTOR BACKDROP)
 # ---------------------------------------------------------
 st.markdown("""
 <style>
@@ -35,7 +35,7 @@ st.markdown("""
         max-width: 100% !important;
     }
 
-    /* Sidebar Navigation Links - NO UNDERLINES */
+    /* Sidebar Navigation Links */
     section[data-testid="stSidebar"] {
         width: 280px !important;
         background-color: #F8FAFC !important;
@@ -96,7 +96,7 @@ st.markdown("""
         margin: 12px 0;
     }
 
-    /* Left Bottom Vector Card (Factory & Gears Backdrop) */
+    /* Left Bottom Vector Card */
     .sidebar-bottom-card {
         background: linear-gradient(180deg, rgba(224,242,254,0.4) 0%, rgba(186,230,253,0.7) 100%);
         border: 1px solid #BAE6FD;
@@ -128,14 +128,14 @@ st.markdown("""
         z-index: 2;
     }
 
-    /* Hero Banner Section */
+    /* Hero Banner Section - EXPANDED RIGHT SIDE IMAGE */
     .main-banner {
-        background: linear-gradient(90deg, #FFFFFF 0%, #EFF6FF 45%, #DBEAFE 100%);
+        background: linear-gradient(90deg, #FFFFFF 0%, #EFF6FF 40%, #DBEAFE 100%);
         border-radius: 16px;
         border: 1px solid #CBD5E1;
         display: flex;
         overflow: hidden;
-        min-height: 200px;
+        min-height: 220px;
         position: relative;
         margin-bottom: 20px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -143,7 +143,7 @@ st.markdown("""
 
     .banner-content {
         padding: 24px 28px;
-        width: 60%;
+        width: 52%;
         z-index: 2;
     }
 
@@ -165,12 +165,14 @@ st.markdown("""
         color: #334155;
     }
 
+    /* Expanded Image Area */
     .banner-right-img {
-        width: 40%;
+        width: 48%;
         position: relative;
-        background-image: url('https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=1200&auto=format&fit=crop');
+        background-image: url('Is-Your-Workforce-Management-Ready-for-AI_2.jpg');
         background-size: cover;
-        background-position: center;
+        background-position: center right;
+        background-repeat: no-repeat;
     }
 
     .banner-overlay-badge {
@@ -178,8 +180,8 @@ st.markdown("""
         right: 0;
         top: 0;
         bottom: 0;
-        width: 75%;
-        background: linear-gradient(135deg, rgba(2, 132, 199, 0.75) 0%, rgba(3, 105, 161, 0.9) 100%);
+        width: 55%;
+        background: linear-gradient(135deg, rgba(2, 132, 199, 0.65) 0%, rgba(3, 105, 161, 0.85) 100%);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -188,6 +190,7 @@ st.markdown("""
         font-size: 0.92rem;
         text-align: center;
         padding: 15px;
+        backdrop-filter: blur(2px);
     }
 
     /* KPI Cards Styling */
@@ -290,7 +293,7 @@ with st.sidebar:
         <a class="nav-item" href="#">❓ Help & Support</a>
     """, unsafe_allow_html=True)
     
-    # EXACT BOTTOM LEFT VECTOR BACKDROP CARD (MATCHING IMAGE)
+    # EXACT BOTTOM LEFT VECTOR BACKDROP CARD
     st.markdown("""
         <div class="sidebar-bottom-card">
             <div class="sidebar-bottom-text">
@@ -349,7 +352,7 @@ if share_clicked:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 5. HERO BANNER WITH ENGINEER IMAGE
+# 5. HERO BANNER WITH EXPANDED INDUSTRIAL AI IMAGE
 # ---------------------------------------------------------
 st.markdown("""
 <div class="main-banner">
@@ -415,7 +418,7 @@ with col_left_main:
         st.plotly_chart(fig_donut, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # RECENT DOCUMENTS CONTAINER WITH CLEAN TABLE STRUCTURE (ROWS REMOVED)
+    # RECENT DOCUMENTS CONTAINER WITH CLEAN TABLE STRUCTURE
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;"><div class="card-title" style="margin:0;">Recent Documents</div><a href="#" style="font-size:0.82rem; font-weight:700; color:#0284C7; text-decoration:none;">View All</a></div>', unsafe_allow_html=True)
     
