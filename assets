@@ -1,0 +1,8 @@
+workflow-ai/
+├── assets/
+│   ├── logo.png                <-- App Left Top Logo Icon
+│   ├── hero_banner.png         <-- Industrial Engineering Background Banner
+│   └── background_pattern.png  <-- Watermark / Bottom Left Illustration
+├── app.py
+├── requirements.txt
+...
