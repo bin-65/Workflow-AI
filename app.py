@@ -4,15 +4,15 @@ import plotly.express as px
 import base64
 import os
 
-# Page Config
+# 1. Page Configuration & Theme Settings
 st.set_page_config(
-    page_title="Workflow AI - Mechanical & Industrial Engineering Focused",
+    page_title="Workflow AI - Intelligent Workplace Productivity Copilot",
     page_icon="⚙️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Function to convert image to base64 for direct CSS injection
+# Function to encode local images safely for HTML/CSS rendering
 def get_image_base64(path):
     if os.path.exists(path):
         with open(path, "rb") as image_file:
@@ -20,94 +20,108 @@ def get_image_base64(path):
     return ""
 
 banner_b64 = get_image_base64("assets/hero_banner.png")
-logo_b64 = get_image_base64("assets/logo.png")
+avatar_b64 = get_image_base64("assets/engineer_avatar.png")
 
-# CSS Styling matching the blue enterprise design layout
+# 2. Custom CSS Injections matching exact reference visual theme
 st.markdown(f"""
     <style>
-    /* Background Page Styling */
+    /* Global Page Background */
     .stApp {{
-        background-color: #F0F4F9;
+        background-color: #F8FAFC;
     }}
     
     header, footer {{visibility: hidden;}}
-    
-    /* Dynamic Banner Background matching Industrial Graphic */
-    .custom-hero-banner {{
-        background: url('data:image/png;base64,{banner_b64}') no-repeat center center;
-        background-size: cover;
-        border-radius: 14px;
-        padding: 40px 30px;
-        color: white;
-        min-height: 180px;
-        position: relative;
+
+    /* Header Profile & Badge Layout */
+    .profile-badge-container {{
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+    }}
+    
+    .profile-avatar {{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #2563EB;
+        color: white;
+        display: flex;
+        align-items: center;
         justify-content: center;
-        margin-bottom: 25px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }}
-    
-    /* Fallback linear gradient if local image is loading */
-    .hero-fallback {{
-        background: linear-gradient(90deg, #1E3A8A 0%, #3B82F6 60%, #93C5FD 100%);
+        font-weight: 700;
+        font-size: 0.95rem;
+        background-size: cover;
+        background-position: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     }}
 
-    .hero-title {{
-        font-size: 2.6rem;
+    /* Main Brand & Hero Banner */
+    .hero-banner-container {{
+        width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid #BFDBFE;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, #E0F2FE 0%, #EFF6FF 40%, #DBEAFE 100%);
+        position: relative;
+    }}
+
+    .hero-banner-img {{
+        width: 100%;
+        height: auto;
+        display: block;
+        max-height: 220px;
+        object-fit: cover;
+    }}
+
+    .hero-fallback-layout {{
+        padding: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 180px;
+    }}
+
+    .brand-title {{
+        font-size: 2.4rem;
         font-weight: 800;
+        color: #1E3A8A;
         margin: 0;
-        color: #0F172A;
     }}
     
-    .hero-subtitle {{
-        font-size: 1.2rem;
-        font-weight: 600;
+    .brand-title-ai {{
         color: #2563EB;
-        margin-top: 5px;
     }}
 
-    .hero-tagline {{
-        font-size: 1rem;
-        color: #475569;
-        margin-top: 4px;
-    }}
-    
-    /* Floating Right Engineering Badge */
-    .badge-tag {{
-        position: absolute;
-        right: 25px;
-        bottom: 25px;
-        background: rgba(15, 23, 42, 0.65);
-        backdrop-filter: blur(5px);
+    .engineering-badge {{
+        background: rgba(30, 58, 138, 0.85);
         color: #FFFFFF;
-        padding: 8px 16px;
+        padding: 10px 20px;
         border-radius: 20px;
-        font-size: 0.85rem;
         font-weight: 600;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 0.9rem;
+        backdrop-filter: blur(4px);
     }}
 
-    /* Metric Cards Custom Styling */
-    .kpi-card {{
+    /* Top KPI Metric Cards */
+    .kpi-card-box {{
         background: #FFFFFF;
         border: 1px solid #E2E8F0;
         border-radius: 12px;
         padding: 16px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }}
-    .kpi-title {{ font-size: 0.85rem; font-weight: 600; color: #64748B; }}
-    .kpi-value {{ font-size: 1.8rem; font-weight: 800; color: #0F172A; margin: 6px 0; }}
-    .kpi-delta {{ font-size: 0.8rem; font-weight: 600; color: #10B981; }}
     
-    /* Quick Actions Button Styling */
+    /* Quick Action Button Overrides */
     div.stButton > button {{
         background-color: #FFFFFF;
         border: 1px solid #E2E8F0;
         border-radius: 10px;
         color: #1E293B;
         font-weight: 600;
-        padding: 12px;
+        padding: 10px 14px;
         text-align: left;
     }}
     div.stButton > button:hover {{
@@ -118,42 +132,67 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-# Top Bar Header
-top_c1, top_c2 = st.columns([4, 1])
-with top_c1:
-    st.text_input("Search documents, ask questions, or find actions...", label_visibility="collapsed", placeholder="🔍 Search documents, ask questions, or find actions...")
-with top_c2:
-    st.markdown("<div style='text-align: right; padding-top: 5px;'><b>JD</b> John Doe<br><small>Mechanical Engineer</small></div>", unsafe_allow_html=True)
+# 3. Top Navigation Header (Search Bar + Engineer Profile Badge)
+top_col1, top_col2 = st.columns([3.5, 1.2])
+
+with top_col1:
+    st.text_input("Search", label_visibility="collapsed", placeholder="🔍 Search documents, ask questions, or find actions...")
+
+with top_col2:
+    avatar_style = f"background-image: url('data:image/png;base64,{avatar_b64}');" if avatar_b64 else ""
+    avatar_text = "" if avatar_b64 else "JD"
+    st.markdown(f"""
+        <div class="profile-badge-container">
+            <span style="font-size: 1.2rem; cursor: pointer;">🔔</span>
+            <div class="profile-avatar" style="{avatar_style}">{avatar_text}</div>
+            <div style="line-height: 1.2;">
+                <div style="font-weight: 700; color: #0F172A; font-size: 0.9rem;">John Doe</div>
+                <div style="color: #64748B; font-size: 0.75rem;">Mechanical Engineer ▾</div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Main Visual Hero Banner (Industrial Engineering Graphic)
-banner_class = "custom-hero-banner" if banner_b64 else "custom-hero-banner hero-fallback"
-st.markdown(f"""
-    <div class="{banner_class}">
-        <div class="hero-title">⚙️ Workflow AI</div>
-        <div class="hero-subtitle">Intelligent Workplace Productivity Copilot</div>
-        <div class="hero-tagline">Turn workplace information into action.</div>
-        <div class="badge-tag">Mechanical & Industrial Engineering Focused</div>
-    </div>
-""", unsafe_allow_html=True)
+# 4. Hero Banner Graphic Rendering
+if banner_b64:
+    st.markdown(f"""
+        <div class="hero-banner-container">
+            <img src="data:image/png;base64,{banner_b64}" class="hero-banner-img" alt="Workflow AI Hero Banner">
+        </div>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+        <div class="hero-banner-container">
+            <div class="hero-fallback-layout">
+                <div>
+                    <div class="brand-title">⚙️ Workflow <span class="brand-title-ai">AI</span></div>
+                    <div style="color: #2563EB; font-weight: 600; font-size: 1.1rem; margin-top: 4px;">Intelligent Workplace Productivity Copilot</div>
+                    <div style="color: #475569; margin-top: 4px;">Turn workplace information into action.</div>
+                </div>
+                <div class="engineering-badge">
+                    Mechanical & Industrial Engineering Focused
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
-# Top 5 Metric Cards Row
+# 5. Top Metric KPI Cards Row
 m1, m2, m3, m4, m5 = st.columns(5)
 with m1:
-    st.markdown('<div class="kpi-card"><div class="kpi-title" style="color:#2563EB;">📄 Documents Processed</div><div class="kpi-value">47</div><div class="kpi-delta">↑ 12% vs last 7 days</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="kpi-card-box"><div style="color:#2563EB; font-weight:600; font-size:0.85rem;">📄 Documents Processed</div><div style="font-size:1.8rem; font-weight:800; color:#0F172A; margin:4px 0;">47</div><div style="color:#10B981; font-size:0.8rem; font-weight:600;">↑ 12% <span style="color:#94A3B8;">vs. last 7 days</span></div></div>', unsafe_allow_html=True)
 with m2:
-    st.markdown('<div class="kpi-card"><div class="kpi-title" style="color:#10B981;">💬 Questions Answered</div><div class="kpi-value">126</div><div class="kpi-delta">↑ 18% vs last 7 days</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="kpi-card-box"><div style="color:#10B981; font-weight:600; font-size:0.85rem;">💬 Questions Answered</div><div style="font-size:1.8rem; font-weight:800; color:#0F172A; margin:4px 0;">126</div><div style="color:#10B981; font-size:0.8rem; font-weight:600;">↑ 18% <span style="color:#94A3B8;">vs. last 7 days</span></div></div>', unsafe_allow_html=True)
 with m3:
-    st.markdown('<div class="kpi-card"><div class="kpi-title" style="color:#8B5CF6;">📋 Actions Extracted</div><div class="kpi-value">83</div><div class="kpi-delta">↑ 21% vs last 7 days</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="kpi-card-box"><div style="color:#8B5CF6; font-weight:600; font-size:0.85rem;">📋 Actions Extracted</div><div style="font-size:1.8rem; font-weight:800; color:#0F172A; margin:4px 0;">83</div><div style="color:#10B981; font-size:0.8rem; font-weight:600;">↑ 21% <span style="color:#94A3B8;">vs. last 7 days</span></div></div>', unsafe_allow_html=True)
 with m4:
-    st.markdown('<div class="kpi-card"><div class="kpi-title" style="color:#F59E0B;">📊 Reports Generated</div><div class="kpi-value">24</div><div class="kpi-delta">↑ 9% vs last 7 days</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="kpi-card-box"><div style="color:#F59E0B; font-weight:600; font-size:0.85rem;">📊 Reports Generated</div><div style="font-size:1.8rem; font-weight:800; color:#0F172A; margin:4px 0;">24</div><div style="color:#10B981; font-size:0.8rem; font-weight:600;">↑ 9% <span style="color:#94A3B8;">vs. last 7 days</span></div></div>', unsafe_allow_html=True)
 with m5:
-    st.markdown('<div class="kpi-card"><div class="kpi-title" style="color:#06B6D4;">⏱️ Estimated Minutes Saved</div><div class="kpi-value">1,240</div><div class="kpi-delta">↑ 32% vs last 7 days</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="kpi-card-box"><div style="color:#06B6D4; font-weight:600; font-size:0.85rem;">⏱️ Estimated Minutes Saved</div><div style="font-size:1.8rem; font-weight:800; color:#0F172A; margin:4px 0;">1,240</div><div style="color:#10B981; font-size:0.8rem; font-weight:600;">↑ 32% <span style="color:#94A3B8;">vs. last 7 days</span></div></div>', unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Charts & Main Content Section
+# 6. Main Visual Grid Section (Analytics Line Chart + Table + Actions Sidebar)
 left_body, right_body = st.columns([2.3, 1])
 
 with left_body:
@@ -165,7 +204,13 @@ with left_body:
         "Actions Extracted": [5, 8, 14, 9, 13, 12, 22]
     })
     
-    fig = px.line(chart_data, x="Date", y=["Documents Processed", "Questions Answered", "Actions Extracted"], markers=True, color_discrete_sequence=["#2563EB", "#10B981", "#8B5CF6"])
+    fig = px.line(
+        chart_data, 
+        x="Date", 
+        y=["Documents Processed", "Questions Answered", "Actions Extracted"], 
+        markers=True, 
+        color_discrete_sequence=["#2563EB", "#10B981", "#8B5CF6"]
+    )
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='white', margin=dict(l=10, r=10, t=10, b=10))
     st.plotly_chart(fig, use_container_width=True)
 
@@ -181,16 +226,27 @@ with left_body:
 
 with right_body:
     st.subheader("Quick Actions")
-    if st.button("📤  Upload Documents", use_container_width=True): st.switch_page("pages/1_Document_Intelligence.py")
-    if st.button("💬  Ask a Question", use_container_width=True): st.switch_page("pages/2_AI_Assistant.py")
-    if st.button("🧩  Extract Tasks", use_container_width=True): st.switch_page("pages/3_Task_Extractor.py")
-    if st.button("📄  Generate Report", use_container_width=True): st.switch_page("pages/5_Report_Generator.py")
-    if st.button("📊  Analyze Spreadsheet", use_container_width=True): st.switch_page("pages/1_Document_Intelligence.py")
+    if st.button("📤  Upload Documents", use_container_width=True): 
+        st.switch_page("pages/1_Document_Intelligence.py")
+    if st.button("💬  Ask a Question", use_container_width=True): 
+        st.switch_page("pages/2_AI_Assistant.py")
+    if st.button("🧩  Extract Tasks", use_container_width=True): 
+        st.switch_page("pages/3_Task_Extractor.py")
+    if st.button("📄  Generate Report", use_container_width=True): 
+        st.switch_page("pages/5_Report_Generator.py")
+    if st.button("📊  Analyze Spreadsheet", use_container_width=True): 
+        st.switch_page("pages/1_Document_Intelligence.py")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
     st.subheader("Actions by Priority")
     pie_df = pd.DataFrame({"Priority": ["High", "Medium", "Low"], "Count": [38, 41, 21]})
-    fig_pie = px.pie(pie_df, values="Count", names="Priority", hole=0.55, color_discrete_sequence=["#EF4444", "#F59E0B", "#10B981"])
+    fig_pie = px.pie(
+        pie_df, 
+        values="Count", 
+        names="Priority", 
+        hole=0.55, 
+        color_discrete_sequence=["#EF4444", "#F59E0B", "#10B981"]
+    )
     fig_pie.update_layout(paper_bgcolor='rgba(0,0,0,0)', margin=dict(l=10, r=10, t=10, b=10))
     st.plotly_chart(fig_pie, use_container_width=True)
