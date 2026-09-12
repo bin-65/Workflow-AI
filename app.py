@@ -10,78 +10,43 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. Custom CSS for Exact UI Layout, Fonts, Colors, & Hero Banner
+# 2. Custom CSS Injections
 st.markdown("""
     <style>
-    /* Global Page Styling */
     .stApp {
         background-color: #F8FAFC;
     }
     
     header, footer { visibility: hidden; }
 
-    /* Top Navigation Profile Badge */
-    .profile-badge-container {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 12px;
-        padding-top: 5px;
-    }
-    
-    .profile-avatar {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        background-color: #1D4ED8;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 1rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    /* Top Search Bar Row */
+    .top-search-row {
+        margin-bottom: 10px;
     }
 
-    .profile-info {
-        text-align: left;
-        line-height: 1.2;
-    }
-
-    .profile-name {
-        font-size: 0.95rem;
-        font-weight: 700;
-        color: #0F172A;
-    }
-
-    .profile-role {
-        font-size: 0.8rem;
-        color: #64748B;
-    }
-
-    /* Hero Banner Styling with Exact Industrial Background & Engineer Image */
-    .hero-banner-box {
+    /* Main Light Blue Hero Banner Layout */
+    .hero-banner-container {
         width: 100%;
         border-radius: 16px;
         overflow: hidden;
         border: 1px solid #BFDBFE;
-        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.08);
-        margin-bottom: 25px;
-        background: linear-gradient(90deg, #E0F2FE 0%, #DBEAFE 35%, #1E40AF 100%);
+        background: linear-gradient(90deg, #EBF5FF 0%, #E0F2FE 40%, #DBEAFE 65%, #93C5FD 100%);
         position: relative;
-        min-height: 200px;
+        min-height: 230px;
         display: flex;
         align-items: center;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.05);
     }
 
-    .hero-banner-content {
-        padding: 35px 40px;
-        width: 60%;
+    .hero-text-content {
+        padding: 30px 40px;
+        width: 50%;
         z-index: 2;
     }
 
-    .hero-banner-title {
-        font-size: 2.6rem;
+    .hero-brand-title {
+        font-size: 2.7rem;
         font-weight: 800;
         color: #1E3A8A;
         margin: 0;
@@ -90,41 +55,43 @@ st.markdown("""
         gap: 10px;
     }
 
-    .hero-banner-title span {
+    .hero-brand-title span {
         color: #2563EB;
     }
 
-    .hero-banner-subtitle {
-        color: #1E40AF;
+    .hero-subtitle {
+        color: #1D4ED8;
         font-size: 1.15rem;
         font-weight: 700;
         margin-top: 6px;
     }
 
-    .hero-banner-desc {
+    .hero-description {
         color: #475569;
         font-size: 0.95rem;
         margin-top: 4px;
     }
 
+    /* Big Engineer Image Right Top Side */
     .hero-engineer-img {
         position: absolute;
         right: 0;
         top: 0;
+        bottom: 0;
         height: 100%;
-        width: 45%;
+        width: 52%;
         object-fit: cover;
         z-index: 1;
-        mask-image: linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
-        -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+        mask-image: linear-gradient(to left, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%);
+        -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 75%, rgba(0,0,0,0) 100%);
     }
 
-    .engineering-tag {
+    .engineering-badge-floating {
         position: absolute;
-        right: 30px;
-        bottom: 25px;
+        right: 25px;
+        bottom: 20px;
         z-index: 3;
-        background: rgba(15, 23, 42, 0.65);
+        background: rgba(15, 23, 42, 0.70);
         color: #FFFFFF;
         padding: 8px 18px;
         border-radius: 12px;
@@ -134,7 +101,7 @@ st.markdown("""
         border: 1px solid rgba(255,255,255,0.2);
     }
 
-    /* KPI Cards Box Styling */
+    /* Metric Cards Styling */
     .kpi-card-box {
         background: #FFFFFF;
         border: 1px solid #E2E8F0;
@@ -143,7 +110,7 @@ st.markdown("""
         box-shadow: 0 1px 3px rgba(0,0,0,0.03);
     }
     
-    /* Quick Action Buttons Styling */
+    /* Quick Actions Button Styling */
     div.stButton > button {
         background-color: #FFFFFF;
         border: 1px solid #E2E8F0;
@@ -162,44 +129,28 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. Top Navigation Bar (Search Bar + John Doe Profile)
-top_col1, top_col2 = st.columns([3.5, 1.2])
-
-with top_col1:
-    st.text_input("Search", label_visibility="collapsed", placeholder="🔍 Search documents, ask questions, or find actions...")
-
-with top_col2:
-    st.markdown("""
-        <div class="profile-badge-container">
-            <span style="font-size: 1.2rem; cursor: pointer;">🔔</span>
-            <div class="profile-avatar">JD</div>
-            <div class="profile-info">
-                <div class="profile-name">John Doe</div>
-                <div class="profile-role">Mechanical Engineer ▾</div>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-
+# 3. Search Bar
+st.text_input("Search", label_visibility="collapsed", placeholder="🔍 Search documents, ask questions, or find actions...")
 st.markdown("<br>", unsafe_allow_html=True)
 
-# 4. Hero Banner Section (With Exact Engineer Image & Layout)
+# 4. Hero Banner (Light Blue Background + Large Engineer Image on Right Side)
 st.markdown("""
-    <div class="hero-banner-box">
-        <div class="hero-banner-content">
-            <div class="hero-banner-title">
+    <div class="hero-banner-container">
+        <div class="hero-text-content">
+            <div class="hero-brand-title">
                 ⚙️ Workflow <span>AI</span>
             </div>
-            <div class="hero-banner-subtitle">Intelligent Workplace Productivity Copilot</div>
-            <div class="hero-banner-desc">Turn workplace information into action.</div>
+            <div class="hero-subtitle">Intelligent Workplace Productivity Copilot</div>
+            <div class="hero-description">Turn workplace information into action.</div>
         </div>
-        <img class="hero-engineer-img" src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1200&auto=format&fit=crop" alt="Engineer at Plant">
-        <div class="engineering-tag">
+        <img class="hero-engineer-img" src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=1400&auto=format&fit=crop" alt="Industrial Engineer">
+        <div class="engineering-badge-floating">
             Mechanical & Industrial Engineering Focused
         </div>
     </div>
 """, unsafe_allow_html=True)
 
-# 5. Top Metric KPI Cards Row
+# 5. Metric KPI Cards Row
 m1, m2, m3, m4, m5 = st.columns(5)
 with m1:
     st.markdown('<div class="kpi-card-box"><div style="color:#2563EB; font-weight:600; font-size:0.85rem;">📄 Documents Processed</div><div style="font-size:1.8rem; font-weight:800; color:#0F172A; margin:4px 0;">47</div><div style="color:#10B981; font-size:0.8rem; font-weight:600;">↑ 12% <span style="color:#94A3B8;">vs. last 7 days</span></div></div>', unsafe_allow_html=True)
@@ -214,7 +165,7 @@ with m5:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# 6. Main Dashboard Content (Analytics Line Chart + Table + Actions Sidebar)
+# 6. Main Visual Grid Section
 left_body, right_body = st.columns([2.3, 1])
 
 with left_body:
