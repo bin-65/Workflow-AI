@@ -415,16 +415,12 @@ with col_left_main:
         st.plotly_chart(fig_donut, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
+    # RECENT DOCUMENTS CONTAINER WITH CLEAN TABLE STRUCTURE (ROWS REMOVED)
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.markdown('<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;"><div class="card-title" style="margin:0;">Recent Documents</div><a href="#" style="font-size:0.82rem; font-weight:700; color:#0284C7; text-decoration:none;">View All</a></div>', unsafe_allow_html=True)
-    docs = [
-        {"Name": "Maintenance_Report.pdf", "Type": "PDF", "Size": "2.4 MB", "Status": "Ready", "Uploaded": "2 hours ago"},
-        {"Name": "Production_Data.xlsx", "Type": "XLSX", "Size": "1.8 MB", "Status": "Ready", "Uploaded": "4 hours ago"},
-        {"Name": "Meeting_Notes.docx", "Type": "DOCX", "Size": "1.2 MB", "Status": "Ready", "Uploaded": "6 hours ago"},
-        {"Name": "Inspection_Report.pdf", "Type": "PDF", "Size": "3.1 MB", "Status": "Processing", "Uploaded": "7 hours ago"},
-        {"Name": "Team_Updates.csv", "Type": "CSV", "Size": "0.9 MB", "Status": "Ready", "Uploaded": "8 hours ago"}
-    ]
-    st.dataframe(pd.DataFrame(docs), use_container_width=True, hide_index=True)
+    
+    empty_docs = pd.DataFrame(columns=["Name", "Type", "Size", "Status", "Uploaded", "Actions"])
+    st.dataframe(empty_docs, use_container_width=True, hide_index=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 with col_right_sidebar:
