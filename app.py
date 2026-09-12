@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+import urllib.parse
 
 # ---------------------------------------------------------
 # 1. PAGE CONFIGURATION
@@ -13,7 +14,7 @@ st.set_page_config(
 )
 
 # ---------------------------------------------------------
-# 2. STYLING & FIXES (NO UNDERLINES, GITHUB & SHARE ADDED)
+# 2. STYLING & FIXES (EXACT BOTTOM LEFT VECTOR & SHARE DIALOG)
 # ---------------------------------------------------------
 st.markdown("""
 <style>
@@ -39,6 +40,7 @@ st.markdown("""
         width: 280px !important;
         background-color: #F8FAFC !important;
         border-right: 1px solid #E2E8F0 !important;
+        position: relative;
     }
     
     .nav-item {
@@ -80,8 +82,8 @@ st.markdown("""
         font-size: 0.8rem;
         font-weight: 600;
         text-decoration: none !important;
-        margin-top: 10px;
-        margin-bottom: 15px;
+        margin-top: 8px;
+        margin-bottom: 12px;
         transition: background 0.2s ease;
     }
     .github-btn:hover {
@@ -91,7 +93,39 @@ st.markdown("""
     .nav-divider {
         height: 1px;
         background-color: #E2E8F0;
-        margin: 15px 0;
+        margin: 12px 0;
+    }
+
+    /* Left Bottom Vector Card (Factory & Gears Backdrop) */
+    .sidebar-bottom-card {
+        background: linear-gradient(180deg, rgba(224,242,254,0.4) 0%, rgba(186,230,253,0.7) 100%);
+        border: 1px solid #BAE6FD;
+        border-radius: 14px;
+        padding: 16px;
+        position: relative;
+        overflow: hidden;
+        margin-top: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    
+    .sidebar-bottom-card::before {
+        content: "";
+        position: absolute;
+        right: -10px;
+        bottom: -10px;
+        width: 70px;
+        height: 70px;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%230284C7" opacity="0.12" viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98 0-.34-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98 0 .33.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>') no-repeat center;
+        background-size: contain;
+    }
+
+    .sidebar-bottom-text {
+        color: #0369A1;
+        font-weight: 700;
+        font-size: 0.84rem;
+        line-height: 1.35;
+        position: relative;
+        z-index: 2;
     }
 
     /* Hero Banner Section */
@@ -113,32 +147,11 @@ st.markdown("""
         z-index: 2;
     }
 
-    .banner-title {
-        font-size: 2.2rem;
-        font-weight: 800;
-        color: #0F2D6B;
-        margin: 0;
-    }
+    .banner-title { font-size: 2.2rem; font-weight: 800; color: #0F2D6B; margin: 0; }
+    .banner-desc { font-size: 1rem; color: #334155; font-weight: 600; margin-top: 4px; }
+    .banner-subtext { font-size: 0.9rem; color: #64748B; margin-bottom: 18px; }
 
-    .banner-desc {
-        font-size: 1rem;
-        color: #334155;
-        font-weight: 600;
-        margin-top: 4px;
-    }
-
-    .banner-subtext {
-        font-size: 0.9rem;
-        color: #64748B;
-        margin-bottom: 18px;
-    }
-
-    .pills-group {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-
+    .pills-group { display: flex; gap: 8px; flex-wrap: wrap; }
     .feature-pill {
         display: inline-flex;
         align-items: center;
@@ -185,7 +198,6 @@ st.markdown("""
         padding: 16px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
-
     .kpi-title { font-size: 0.82rem; font-weight: 700; color: #475569; margin-top: 10px; }
     .kpi-value { font-size: 1.8rem; font-weight: 800; color: #0F172A; margin: 4px 0; }
     .kpi-change { font-size: 0.78rem; font-weight: 700; color: #10B981; }
@@ -199,10 +211,9 @@ st.markdown("""
         box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         margin-bottom: 20px;
     }
-
     .card-title { font-size: 1.05rem; font-weight: 700; color: #0F172A; margin-bottom: 15px; }
 
-    /* Quick Action Buttons Styling */
+    /* Quick Action Buttons */
     .action-btn {
         display: flex;
         align-items: center;
@@ -215,17 +226,35 @@ st.markdown("""
         border: 1px solid transparent;
         cursor: pointer;
     }
-
     .btn-blue { background-color: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
     .btn-purple { background-color: #F5F3FF; color: #6D28D9; border-color: #DDD6FE; }
     .btn-green { background-color: #ECFDF5; color: #047857; border-color: #A7F3D0; }
     .btn-orange { background-color: #FFF7ED; color: #C2410C; border-color: #FFEDD5; }
     .btn-teal { background-color: #F0FDFA; color: #0F766E; border-color: #99F6E4; }
+
+    /* Share Buttons Styling */
+    .share-social-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: white !important;
+        text-decoration: none !important;
+        margin-right: 6px;
+        margin-bottom: 6px;
+    }
+    .bg-whatsapp { background-color: #25D366; }
+    .bg-linkedin { background-color: #0A66C2; }
+    .bg-twitter { background-color: #1DA1F2; }
+    .bg-email { background-color: #EA4335; }
 </style>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 3. SIDEBAR NAVIGATION & GITHUB LINK
+# 3. SIDEBAR NAVIGATION & BOTTOM VECTOR LOGO
 # ---------------------------------------------------------
 with st.sidebar:
     st.markdown("""
@@ -237,7 +266,7 @@ with st.sidebar:
             <div style="font-size: 0.75rem; color: #475569; margin-top: 4px; font-weight: 500;">Intelligent Workplace Productivity Copilot</div>
         </div>
         
-        <!-- GITHUB EDIT LINK BUTTON -->
+        <!-- GITHUB EDIT CODE LINK -->
         <a class="github-btn" href="https://github.com/bin-65/Workflow-AI" target="_blank">
             <svg height="16" width="16" viewBox="0 0 16 16" fill="white"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
             Edit Code (GitHub)
@@ -261,17 +290,19 @@ with st.sidebar:
         <a class="nav-item" href="#">❓ Help & Support</a>
     """, unsafe_allow_html=True)
     
-    st.markdown("<br>", unsafe_allow_html=True)
+    # EXACT BOTTOM LEFT VECTOR BACKDROP CARD (MATCHING IMAGE)
     st.markdown("""
-        <div style="background-color: #EFF6FF; padding: 15px; border-radius: 12px; border: 1px solid #BFDBFE;">
-            <div style="color: #1D4ED8; font-weight: 700; font-size: 0.85rem;">Smarter Documents.</div>
-            <div style="color: #1D4ED8; font-weight: 700; font-size: 0.85rem;">Better Decisions.</div>
-            <div style="color: #2563EB; font-weight: 600; font-size: 0.85rem;">Higher Productivity.</div>
+        <div class="sidebar-bottom-card">
+            <div class="sidebar-bottom-text">
+                Smarter Documents.<br>
+                Better Decisions.<br>
+                Higher Productivity.
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# 4. TOP BAR, SHARE OPTION & USER PROFILE
+# 4. TOP BAR & SHARE APP POPUP LOGIC
 # ---------------------------------------------------------
 col_search, col_actions = st.columns([3.8, 1.4])
 
@@ -282,8 +313,7 @@ with col_actions:
     col_share, col_user_profile = st.columns([1, 2])
     
     with col_share:
-        if st.button("🔗 Share", help="Share application link"):
-            st.toast("App link copied to clipboard!", icon="✅")
+        share_clicked = st.button("🔗 Share", help="Share application link across platforms")
             
     with col_user_profile:
         st.markdown("""
@@ -293,6 +323,26 @@ with col_actions:
                     <div style="font-weight: 700; font-size: 0.82rem; color: #0F172A;">John Doe</div>
                     <div style="font-size: 0.7rem; color: #64748B;">Mechanical Engineer</div>
                 </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+# SHARE DIALOG POPUP WHEN SHARE IS CLICKED
+if share_clicked:
+    app_url = "https://workflow-ai.streamlit.app"
+    encoded_url = urllib.parse.quote(app_url)
+    share_text = urllib.parse.quote("Check out Workflow AI - Intelligent Workplace Productivity Copilot!")
+    
+    with st.expander("🚀 Share Workflow AI App", expanded=True):
+        st.markdown("Copy the direct app link or share directly to social platforms:")
+        
+        st.code(app_url, language=None)
+        
+        st.markdown(f"""
+            <div style="margin-top: 10px;">
+                <a class="share-social-btn bg-whatsapp" href="https://api.whatsapp.com/send?text={share_text}%20{encoded_url}" target="_blank">📱 WhatsApp</a>
+                <a class="share-social-btn bg-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url={encoded_url}" target="_blank">💼 LinkedIn</a>
+                <a class="share-social-btn bg-twitter" href="https://twitter.com/intent/tweet?url={encoded_url}&text={share_text}" target="_blank">🐦 Twitter</a>
+                <a class="share-social-btn bg-email" href="mailto:?subject=Workflow%20AI%20Copilot&body={share_text}%20{encoded_url}" target="_blank">✉️ Email</a>
             </div>
         """, unsafe_allow_html=True)
 
